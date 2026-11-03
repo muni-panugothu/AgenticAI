@@ -28,12 +28,12 @@ class ReadFileInput(StrictToolInput):
 
     line_start: int | None = Field(
         default=None,
-        description="Starting line number"
+        description="First line of one function or a small range"
     )
 
     line_end: int | None = Field(
         default=None,
-        description="Ending line number"
+        description="Last line of that function or small range"
     )
 
 

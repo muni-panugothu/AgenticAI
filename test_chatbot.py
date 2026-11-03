@@ -16,6 +16,11 @@ while True:
 
         print("\nGoodbye!")
         break
+
+    if not user_input.strip():
+        print("\nPlease enter a message.\n")
+        continue
+
     response = chat_with_ai(user_input)
 
     print("\nAI:", response)

@@ -58,24 +58,24 @@ tool_definitions = [
     "type": "function",
     "function": {
         "name": "read_file",
-        "description": "Read the contents of a project file. Optionally read a specific line range.",
+        "description": "Read one function or a small line range from a project file by its real path, including directories, such as app/services/temporary_memory_service.py. A bare file name is not a path. If the user only named the file, call search_code first and use the path it returns. Always pass line_start and line_end. Do not request the entire file. The content after the content: label is exact source text: spaces, blank lines, and indentation are preserved. If truncated is true, one more read may start at next_line and cover only the rest of that function. line_end is the last line actually returned. Then answer.",
         "parameters": {
             "type": "object",
             "properties": {
 
                 "file_path": {
                     "type": "string",
-                    "description": "Path of the file to read."
+                    "description": "Directory path from the user or from search_code, such as app/services/temporary_memory_service.py. Never pass only the file name."
                 },
 
                 "line_start": {
                     "type": "integer",
-                    "description": "Optional starting line number."
+                    "description": "First line of one function or a small range. Required. Do not omit this to read the whole file."
                 },
 
                 "line_end": {
                     "type": "integer",
-                    "description": "Optional ending line number."
+                    "description": "Last line of that function or small range, at most about 70 lines after line_start. Required."
                 }
 
             },
@@ -92,9 +92,16 @@ tool_definitions = [
         "name": "search_code",
 
         "description": (
-            "Search the project's application source "
-            "code for text, function names, classes, "
-            "variables, or imports."
+            "Search the project before reading a file when "
+            "you only know a file name or a symbol. Returns "
+            "the real file path, line number, and matching "
+            "line. Search once for the exact symbol. The "
+            "matches already include the assignment and "
+            "every use, including expire calls. Then call "
+            "read_file once on that path for the function "
+            "only, about 70 lines, and answer. Do not read "
+            "the entire file. Do not search again for the "
+            "file name or for calls that already appeared."
         ),
 
         "parameters": {
